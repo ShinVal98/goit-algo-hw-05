@@ -56,3 +56,31 @@ def rabin_karp(text, pattern, prime=101):
             t = (t - h * ord(text[s])) * d + ord(text[s + m])
             t %= prime
     return -1
+
+
+import timeit
+
+# Вхідні дані
+with open("article1.txt", "r", encoding='utf-8') as f:
+    text1 = f.read()
+
+with open("article2.txt", "r", encoding='utf-8') as f:
+    text2 = f.read()
+
+pattern_real = "Python"
+pattern_fake = "xyzxyzxyz"
+
+# Створення замірів
+def measure(func, text, pattern):
+    return timeit.timeit(lambda: func(text, pattern), number=10)
+
+# Вимірювання
+print("=== Text 1 ===")
+print("Boyer-Moore (реальне):", measure(boyer_moore, text1, pattern_real))
+print("KMP (реальне):", measure(kmp, text1, pattern_real))
+print("Rabin-Karp (реальне):", measure(rabin_karp, text1, pattern_real))
+
+print("\n=== Text 2 ===")
+print("Boyer-Moore (вигадане):", measure(boyer_moore, text2, pattern_fake))
+print("KMP (вигадане):", measure(kmp, text2, pattern_fake))
+print("Rabin-Karp (вигадане):", measure(rabin_karp, text2, pattern_fake))
